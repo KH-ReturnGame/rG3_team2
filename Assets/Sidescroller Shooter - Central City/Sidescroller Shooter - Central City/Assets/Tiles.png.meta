@@ -303,7 +303,7 @@ TextureImporter:
         serializedVersion: 2
         x: 31
         y: 80
-        width: 17
+        width: 18
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -561,6 +561,72 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Tiles_21
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f6e854ed0e2398141afb84bf07d3dfe9
+      internalID: 2012806526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tiles_22
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67eb7bd6d6e81b643bb6d0e07983a381
+      internalID: 20918243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Tiles_23
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 32
+        width: 28
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: da1cc2fb81bbfc543acbf2397b5d6711
+      internalID: 2080668305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -589,6 +655,9 @@ TextureImporter:
       Tiles_19: -1779446289
       Tiles_2: 583441460
       Tiles_20: 404169397
+      Tiles_21: 2012806526
+      Tiles_22: 20918243
+      Tiles_23: 2080668305
       Tiles_3: 1353809900
       Tiles_4: -2058115230
       Tiles_5: -1935600073

@@ -258,9 +258,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 71
-        y: 81
+        y: 80
         width: 25
-        height: 23
+        height: 24
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -280,9 +280,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 47
-        y: 82
+        y: 80
         width: 24
-        height: 22
+        height: 24
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -456,9 +456,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 80
-        y: 66
+        y: 65
         width: 16
-        height: 14
+        height: 15
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -522,9 +522,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 16
+        y: 0
         width: 32
-        height: 16
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -566,9 +566,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
+        y: 12
         width: 32
-        height: 32
+        height: 20
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -601,28 +601,6 @@ TextureImporter:
       bones: []
       spriteID: 67eb7bd6d6e81b643bb6d0e07983a381
       internalID: 20918243
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Tiles_23
-      rect:
-        serializedVersion: 2
-        x: 42
-        y: 32
-        width: 28
-        height: 11
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: da1cc2fb81bbfc543acbf2397b5d6711
-      internalID: 2080668305
       vertices: []
       indices: 
       edges: []

@@ -351,7 +351,7 @@ GameObject:
   - component: {fileID: 625543761}
   - component: {fileID: 625543760}
   - component: {fileID: 625543762}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Square
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -662,7 +662,7 @@ Transform:
   m_GameObject: {fileID: 1048702199}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.13, y: -2.18, z: 0}
+  m_LocalPosition: {x: -6.81, y: -2.24, z: 0}
   m_LocalScale: {x: 1.0763731, y: 0.9850163, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -681,6 +681,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
   moveSpeed: 3
+  jumpForce: 5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  groundCheckOffset: {x: 0, y: 0.6}
+  groundCheckRadius: 0.9
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

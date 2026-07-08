@@ -22,8 +22,25 @@ public class PlayerMove : MonoBehaviour
 
     // 플레이어의 SpriteRenderer를 저장할 변수
     private SpriteRenderer spriteRenderer;
+    // 점프 힘
+    [SerializeField]
+    private float jumpForce = 10f;
 
-  
+    // Ground 판정을 할 레이어
+    [SerializeField]
+    private LayerMask groundLayer;
+
+    // 플레이어 중심에서 GroundCheck 원을 얼마나 아래로 내릴지
+    [SerializeField]
+    private Vector2 groundCheckOffset = new Vector2(0f, -0.6f);
+
+    // GroundCheck 원의 반지름
+    [SerializeField]
+    private float groundCheckRadius = 0.2f;
+
+    // 현재 바닥에 있는지 저장
+    private bool isGrounded;
+
     private void Awake()
     {
         // 같은 오브젝트에 있는 Rigidbody2D를 가져온다.
@@ -50,7 +67,17 @@ public class PlayerMove : MonoBehaviour
             moveInput = 0;
         }
         animator.SetFloat("Speed", Mathf.Abs(rb.linearVelocity.x));
-      
+        // 플레이어 발밑에 원을 만들어 Ground와 겹치는지 검사
+        isGrounded = Physics2D.OverlapCircle(
+            (Vector2)transform.position + groundCheckOffset,
+            groundCheckRadius,
+            groundLayer
+        );
+        // 스페이스를 눌렀고 바닥에 있을 때만 점프
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        }
     }
 
     // FixedUpdate는 일정한 시간 간격으로 실행된다.
@@ -62,5 +89,13 @@ public class PlayerMove : MonoBehaviour
         rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
     }
 
-   
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawWireSphere(
+            (Vector2)transform.position + groundCheckOffset,
+            groundCheckRadius
+        );
+    }
 }

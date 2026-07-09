@@ -1,12 +1,5 @@
 fileFormatVersion: 2
-guid: 9c2c724bea724a748970afee246ef1ed
-AssetOrigin:
-  serializedVersion: 1
-  productId: 221542
-  packageName: Pixel Prototype Player Sprites
-  packageVersion: 1.3
-  assetPath: Assets/DeadRevolver/PixelPrototypePlayerSprites/Art/Sprites/JumpRise/JumpRise01.png
-  uploadId: 701437
+guid: 4261748eb1304fc4983eb8734b58e0d4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}

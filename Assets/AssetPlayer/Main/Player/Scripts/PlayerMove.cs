@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections;
 public class PlayerMove : MonoBehaviour
 {
     // 플레이어의 Rigidbody2D를 저장할 변수
@@ -20,8 +20,7 @@ public class PlayerMove : MonoBehaviour
     private Animator animator;
     // 게임 시작 시 한 번만 실행
 
-    // 플레이어의 SpriteRenderer를 저장할 변수
-    private SpriteRenderer spriteRenderer;
+
     // 점프 힘
     [SerializeField]
     private float jumpForce = 10f;
@@ -41,6 +40,23 @@ public class PlayerMove : MonoBehaviour
     // 현재 바닥에 있는지 저장
     private bool isGrounded;
 
+    // 대시 속도
+    [SerializeField]
+    private float dashSpeed = 12f;
+
+    // 대시 지속 시간
+    [SerializeField]
+    private float dashDuration = 0.2f;
+
+    // 현재 대시 중인지
+    private bool isDashing;
+    // 대시 쿨타임
+    [SerializeField]
+    private float dashCooldown = 3f;
+
+    // 현재 대시 가능 여부
+    private bool canDash = true;
+
     private void Awake()
     {
         // 같은 오브젝트에 있는 Rigidbody2D를 가져온다.
@@ -48,11 +64,7 @@ public class PlayerMove : MonoBehaviour
 
         animator = GetComponent<Animator>();
 
-        // 같은 오브젝트의 SpriteRenderer를 가져온다.
-        spriteRenderer = GetComponent<SpriteRenderer>();
     }
-
-    // Update는 매 프레임 실행된다.
     // 입력(Input)은 Update에서 받는 것이 가장 적절하다.
     private void Update()
     {
@@ -73,10 +85,20 @@ public class PlayerMove : MonoBehaviour
             groundCheckRadius,
             groundLayer
         );
+        // Animator에 현재 상태 전달
+        animator.SetBool("IsGrounded", isGrounded);
         // 스페이스를 눌렀고 바닥에 있을 때만 점프
+        animator.SetFloat("VerticalVelocity", rb.linearVelocity.y);
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        }
+        if (Input.GetKeyDown(KeyCode.LeftShift) &&
+    !isDashing &&
+    canDash &&
+    moveInput > 0)
+        {
+            StartCoroutine(Dash());
         }
     }
 
@@ -84,11 +106,30 @@ public class PlayerMove : MonoBehaviour
     // Rigidbody를 이용한 물리 이동은 여기서 처리하는 것이 좋다.
     private void FixedUpdate()
     {
-        // 현재 y축 속도는 그대로 유지하고
-        // x축 속도만 입력값에 따라 변경한다.
-        rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+        // 대시 중이 아닐 때만 일반 이동
+        if (!isDashing)
+        {
+            rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+        }
     }
 
+    // 플레이어를 앞으로 빠르게 이동시키는 대시 함수
+    private IEnumerator Dash()
+    {
+    
+        // 대시 시작
+        isDashing = true;
+        canDash = false;
+        // 앞으로 빠르게 이동
+        rb.linearVelocity = new Vector2(dashSpeed, rb.linearVelocity.y);
+
+        // 대시 시간만큼 유지
+        yield return new WaitForSeconds(dashDuration);
+        isDashing = false;
+        yield return new WaitForSeconds(dashCooldown);
+        // 대시 종료
+        canDash = true;
+    }
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -98,4 +139,6 @@ public class PlayerMove : MonoBehaviour
             groundCheckRadius
         );
     }
+
+
 }

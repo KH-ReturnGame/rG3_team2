@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 using System.Collections;
 
 public class SpeedPad : MonoBehaviour
@@ -68,4 +68,4 @@ public class SpeedPad : MonoBehaviour
 
         resetCoroutine = null;
     }
-}
+}*/

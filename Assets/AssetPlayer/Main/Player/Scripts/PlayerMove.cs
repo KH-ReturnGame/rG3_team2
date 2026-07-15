@@ -44,7 +44,7 @@ public class PlayerMove : MonoBehaviour
     private float groundCheckRadius = 0.2f;
 
     // 바닥 여부
-    private bool isGrounded;
+    public bool isGrounded;
 
 
     // 대시 속도
@@ -64,13 +64,14 @@ public class PlayerMove : MonoBehaviour
 
     // 대시 가능 여부
     private bool canDash = true;
-
-
+    AudioSource poopSound;
+    public AudioClip[] poopSoundClips;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        poopSound = GetComponent<AudioSource>();
     }
 
 
@@ -78,7 +79,6 @@ public class PlayerMove : MonoBehaviour
     {
         // 좌우 입력
         moveInput = Input.GetAxisRaw("Horizontal");
-
 
         // 이동 방향에 따라 캐릭터 방향 변경
         if (moveInput > 0)
@@ -92,10 +92,8 @@ public class PlayerMove : MonoBehaviour
             spriteRenderer.flipX = true;
         }
 
-
         // 이동 애니메이션
         animator.SetFloat("Speed", Mathf.Abs(rb.linearVelocity.x));
-
 
         // Ground 체크
         isGrounded = Physics2D.OverlapCircle(
@@ -104,18 +102,16 @@ public class PlayerMove : MonoBehaviour
             groundLayer
         );
 
-
         // Animator 전달
         animator.SetBool("IsGrounded", isGrounded);
         animator.SetFloat("VerticalVelocity", rb.linearVelocity.y);
-
 
         // 점프
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            // poopSound.PlayOneShot(poopSoundClips[1]); // 히히
         }
-
 
         // 대시
         if (Input.GetKeyDown(KeyCode.LeftShift) &&
@@ -147,7 +143,7 @@ public class PlayerMove : MonoBehaviour
         canDash = false;
 
         animator.SetTrigger("Dash");
-
+        poopSound.PlayOneShot(poopSoundClips[1]); // 뿡
 
         // 바라보는 방향으로 대시
         rb.linearVelocity = new Vector2(

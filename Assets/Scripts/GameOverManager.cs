@@ -5,8 +5,6 @@ using System.Collections;
 
 public class GameOverManager : MonoBehaviour
 {
-    public static GameOverManager Instance { get; private set; }
-
     [Header("씬 이동 설정")]
     [Tooltip("이동할 게임오버 씬의 이름을 적어주세요.")]
     public string gameOverSceneName = "6.GameOver";
@@ -16,19 +14,15 @@ public class GameOverManager : MonoBehaviour
     public Image fadeImage;
     [Tooltip("암전이 진행되는 시간입니다.")]
     public float fadeDuration = 1.0f;
+    public Transform[] checkpoints; // 체크포인트 위치 배열
+    public int checkpointIndex = 0; // 현재 체크포인트 인덱스
+    public GameObject player; // 플레이어 오브젝트
 
-    private void Awake()
+    void Start()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        checkpointIndex = PlayerPrefs.GetInt("CheckpointIndex", 0);
+        player.transform.position = checkpoints[checkpointIndex].position;
     }
-
     // 플레이어가 죽을 때 이 함수가 호출됩니다.
     public void TriggerGameOver()
     {
@@ -64,6 +58,7 @@ public class GameOverManager : MonoBehaviour
         }
 
         // 암전이 다 되면 씬을 변경합니다.
+        PlayerPrefs.SetInt("CheckpointIndex", checkpointIndex);
         SceneManager.LoadScene(gameOverSceneName);
     }
 }

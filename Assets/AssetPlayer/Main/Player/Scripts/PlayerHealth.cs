@@ -20,6 +20,9 @@ public class PlayerHealth : MonoBehaviour
     private Rigidbody2D rb;
     private Collider2D col;
     private SpriteRenderer spriteRenderer; // 플레이어를 화면에서 숨기기 위한 컴포넌트
+    public GameOverManager gameOverManager;
+    AudioSource poopSound;
+    public AudioClip[] poopSoundClips;
 
     void Start()
     {
@@ -30,6 +33,7 @@ public class PlayerHealth : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
         spriteRenderer = GetComponent<SpriteRenderer>(); // 플레이어의 스프라이트 렌더러 가져오기
+        poopSound = GetComponent<AudioSource>();
     }
 
     public void TakeDamage(int damage)
@@ -73,7 +77,9 @@ public class PlayerHealth : MonoBehaviour
         {
             anim.SetTrigger("Die");
         }
-
+        
+        poopSound.PlayOneShot(poopSoundClips[2]); // fhaa
+        
         // 4. 사망 연출 대기 시간 동안 대기
         yield return new WaitForSeconds(deathDelay);
 
@@ -83,16 +89,8 @@ public class PlayerHealth : MonoBehaviour
         {
             spriteRenderer.enabled = false;
         }
-
-        // 5. 싱글톤 매니저에게 게임오버 처리를 부탁합니다.
-        if (GameOverManager.Instance != null)
-        {
-            GameOverManager.Instance.TriggerGameOver();
-        }
-        else
-        {
-            Debug.LogWarning("GameOverManager가 씬에 존재하지 않습니다!");
-        }
+        
+        gameOverManager.TriggerGameOver();
     }
 
     private IEnumerator InvincibilityRoutine()

@@ -18,7 +18,6 @@ public class SpikeTrap2D : MonoBehaviour
 
     void Start()
     {
-        // 🌟 핵심: 부모 기준의 상대적 위치(로컬 위치)를 기억합니다.
         startLocalPosition = transform.localPosition;
     }
 
@@ -93,7 +92,6 @@ public class SpikeTrap2D : MonoBehaviour
             {
                 playerHp.TakeDamage(damageAmount);
             }
-            
         }
     }
 }

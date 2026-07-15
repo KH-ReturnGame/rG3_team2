@@ -4,26 +4,5 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-<<<<<<< HEAD
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-=======
-  - enabled: 1
-    path: Assets/MainScenes/SampleScene.unity
->>>>>>> Junsubranch
-    guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
-    path: Assets/Scene/1.Lobby.unity
-    guid: ead72eb220e8dae4fb558388ade779e9
-  - enabled: 1
-    path: Assets/Scene/2.StageSelect.unity
-    guid: 8b71249dc90193948957ce28326f8a5a
-  - enabled: 0
-    path: Assets/Scenes/Tutorial.unity
-    guid: ecbeec6dfa5a1244d84fdb67387b747d
-  - enabled: 1
-    path: Assets/Scene/3.Tutorial.unity
-    guid: c58f5b8c65708ea4c98f3542ae3c725a
-  m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  m_Scenes: []
+  m_configObjects: {}

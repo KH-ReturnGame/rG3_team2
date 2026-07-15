@@ -492,6 +492,7 @@ GameObject:
   - component: {fileID: 1048702200}
   - component: {fileID: 1048702206}
   - component: {fileID: 1048702207}
+  - component: {fileID: 1048702208}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -640,7 +641,7 @@ Transform:
   m_GameObject: {fileID: 1048702199}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.69, y: -2.1, z: 0}
+  m_LocalPosition: {x: -8.94, y: -0.04, z: 0}
   m_LocalScale: {x: 1.0763731, y: 0.9850163, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -665,6 +666,9 @@ MonoBehaviour:
     m_Bits: 64
   groundCheckOffset: {x: 0, y: 0.4}
   groundCheckRadius: 0.7
+  dashSpeed: 12
+  dashDuration: 0.2
+  dashCooldown: 1
 --- !u!95 &1048702207
 Animator:
   serializedVersion: 7
@@ -687,6 +691,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1048702208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048702199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34aaa85b2bf3dcd4bb4bf2faef0076e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  maxHp: 1
+  invincibilityDuration: 1
+  deathDelay: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

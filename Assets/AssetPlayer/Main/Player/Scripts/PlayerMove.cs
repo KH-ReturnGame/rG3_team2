@@ -120,6 +120,8 @@ public class PlayerMove : MonoBehaviour
         // 대시 시작
         isDashing = true;
         canDash = false;
+        // 대시 애니메이션 실행
+        animator.SetTrigger("Dash");
         // 앞으로 빠르게 이동
         rb.linearVelocity = new Vector2(dashSpeed, rb.linearVelocity.y);
 

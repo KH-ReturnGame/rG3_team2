@@ -3,32 +3,33 @@ using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [Header("ÇÃ·¹ÀÌ¾î Ã¼·Â ¼³Á¤")]
+    [Header("í”Œë ˆì´ì–´ ì²´ë ¥ ì„¤ì •")]
     public int maxHp = 3;
     private int currentHp;
 
-    [Header("¹«Àû ½Ã°£ ¼³Á¤")]
+    [Header("ë¬´ì  ì‹œê°„ ì„¤ì •")]
     public float invincibilityDuration = 1f;
     private bool isInvincible = false;
 
-    [Header("»ç¸Á ¿¬Ãâ ¼³Á¤ (¹Ì·¡ ´ëºñ¿ë)")]
-    [Tooltip("Á×À½ ¾Ö´Ï¸ŞÀÌ¼ÇÀÇ Àç»ı ½Ã°£À» Àû¾îÁÖ¼¼¿ä. ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ¾øÀ» ¶§´Â 0À¸·Î µÎ¸é Áï½Ã »èÁ¦µË´Ï´Ù.")]
+    [Header("ì‚¬ë§ ì§€ì—° ì‹œê°„ (ì—°ì¶œìš©)")]
+    [Tooltip("ì‚¬ë§ ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ ì‹œê°„ ì„¤ì • (0ì´ë©´ ì¦‰ì‹œ ìˆ¨ê¹€)")]
     public float deathDelay = 0f;
 
-    // ÄÄÆ÷³ÍÆ® ÂüÁ¶ (ÀÖÀ¸¸é ¾²°í, ¾øÀ¸¸é ¾Ë¾Æ¼­ ÆĞ½ºÇÏµµ·Ï ¿¹¿Ü Ã³¸® ¿Ï·á)
+    // ì»´í¬ë„ŒíŠ¸ ì €ì¥ìš© ë³€ìˆ˜
     private Animator anim;
     private Rigidbody2D rb;
     private Collider2D col;
+    private SpriteRenderer spriteRenderer; // í”Œë ˆì´ì–´ë¥¼ í™”ë©´ì—ì„œ ìˆ¨ê¸°ê¸° ìœ„í•œ ì»´í¬ë„ŒíŠ¸
 
     void Start()
     {
         currentHp = maxHp;
         Time.timeScale = 1f;
 
-        // ÄÄÆ÷³ÍÆ®°¡ ÀÖÀ¸¸é °¡Á®¿À°í, ¾ø¾îµµ ¿¡·¯°¡ ³ªÁö ¾Ê°Ô °¨Áö¸Ç ¿ªÇÒ¸¸ ÇÕ´Ï´Ù.
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>(); // í”Œë ˆì´ì–´ì˜ ìŠ¤í”„ë¼ì´íŠ¸ ë Œë”ëŸ¬ ê°€ì ¸ì˜¤ê¸°
     }
 
     public void TakeDamage(int damage)
@@ -36,7 +37,7 @@ public class PlayerHealth : MonoBehaviour
         if (isInvincible) return;
 
         currentHp -= damage;
-        Debug.Log("ÇÃ·¹ÀÌ¾î°¡ µ¥¹ÌÁö¸¦ ÀÔ¾ú½À´Ï´Ù! ³²Àº HP: " + currentHp);
+        Debug.Log("í”Œë ˆì´ì–´ê°€ ë°ë¯¸ì§€ë¥¼ ì…ì—ˆìŠµë‹ˆë‹¤! í˜„ì¬ HP: " + currentHp);
 
         if (currentHp <= 0)
         {
@@ -50,29 +51,48 @@ public class PlayerHealth : MonoBehaviour
 
     private IEnumerator DieRoutine()
     {
-        Debug.Log("ÇÃ·¹ÀÌ¾î »ç¸Á Ã³¸® ½ÃÀÛ");
+        Debug.Log("í”Œë ˆì´ì–´ ì‚¬ë§ ì²˜ë¦¬ ì‹œì‘");
 
-        // 1. [¿À·ù ¹æÁö ÇÙ½É] Á×´Â ¼ø°£ Äİ¶óÀÌ´õ¿Í ¹°¸®¸¦ Â÷´ÜÇÕ´Ï´Ù.
-        // ÀÌ Ã³¸®°¡ ¾øÀ¸¸é Á×¾î¼­ µô·¹ÀÌµÇ´Â µµÁß¿¡ °¡½Ã¿¡ ¶Ç ºÎµúÈ÷´Â ¹ö±×°¡ »ı±é´Ï´Ù.
+        // 1. ë¬¼ë¦¬ì™€ ì¶©ëŒì„ êº¼ì„œ í”Œë ˆì´ì–´ê°€ ì¡°ì‘ë˜ê±°ë‚˜ ë” ë§ì§€ ì•Šê²Œ í•©ë‹ˆë‹¤.
         if (col != null) col.enabled = false;
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
-            rb.isKinematic = true; // Áß·Â ¿µÇâ Á¦°Å (°øÁß¿¡¼­ Á×¾úÀ» ¶§ ¸ØÃß°Ô ÇÏ°Å³ª ¾Æ·¡·Î ¾È ¶³¾îÁö°Ô º¸È£)
+            rb.isKinematic = true; 
         }
 
-        // 2. [¹Ì·¡ ´ëºñ] Animator ÄÄÆ÷³ÍÆ®°¡ ÇÃ·¹ÀÌ¾î¿¡°Ô 'ÀÖÀ» ¶§¸¸' Àç»ıÀ» ½ÃµµÇÕ´Ï´Ù.
-        // Áö±İÀº Animator°¡ ¾ø¾îµµ ¿¡·¯(NullReferenceException)°¡ ³ªÁö ¾Ê°í ¾ÈÀüÇÏ°Ô ³Ñ¾î°©´Ï´Ù.
+        // 2. í”Œë ˆì´ì–´ ì¡°ì‘ ìŠ¤í¬ë¦½íŠ¸(PlayerMove) ë¹„í™œì„±í™”
+        MonoBehaviour moveScript = GetComponent("PlayerMove") as MonoBehaviour;
+        if (moveScript != null)
+        {
+            moveScript.enabled = false;
+        }
+
+        // 3. ì• ë‹ˆë©”ì´ì…˜ íŠ¸ë¦¬ê±° ì‹¤í–‰
         if (anim != null)
         {
             anim.SetTrigger("Die");
         }
 
-        // 3. ¼³Á¤ÇÑ µô·¹ÀÌ ½Ã°£¸¸Å­ ´ë±âÇÕ´Ï´Ù. (Áö±İÀº 0ÃÊÀÌ¹Ç·Î ¹Ù·Î Åë°ú)
+        // 4. ì‚¬ë§ ì—°ì¶œ ëŒ€ê¸° ì‹œê°„ ë™ì•ˆ ëŒ€ê¸°
         yield return new WaitForSeconds(deathDelay);
 
-        // 4. ¿ÀºêÁ§Æ® »èÁ¦
-        Destroy(gameObject);
+        // ğŸŒŸ [í•µì‹¬]: í”Œë ˆì´ì–´ë¥¼ Destroyí•˜ì§€ ì•Šê³  ì´ë¯¸ì§€(ìŠ¤í”„ë¼ì´íŠ¸)ë§Œ ê°ìª½ê°™ì´ ë•ë‹ˆë‹¤!
+        // ì´ ë•ë¶„ì— ìì‹ ì¹´ë©”ë¼ê°€ íŒŒê´´ë˜ì§€ ì•Šê³  í™”ë©´ì„ ê³„ì† ê·¸ë¦´ ìˆ˜ ìˆê²Œ ë©ë‹ˆë‹¤.
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.enabled = false;
+        }
+
+        // 5. ì‹±ê¸€í†¤ ë§¤ë‹ˆì €ì—ê²Œ ê²Œì„ì˜¤ë²„ ì²˜ë¦¬ë¥¼ ë¶€íƒí•©ë‹ˆë‹¤.
+        if (GameOverManager.Instance != null)
+        {
+            GameOverManager.Instance.TriggerGameOver();
+        }
+        else
+        {
+            Debug.LogWarning("GameOverManagerê°€ ì”¬ì— ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤!");
+        }
     }
 
     private IEnumerator InvincibilityRoutine()

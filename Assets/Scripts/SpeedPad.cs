@@ -1,4 +1,4 @@
-/*using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class SpeedPad : MonoBehaviour
@@ -12,7 +12,7 @@ public class SpeedPad : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerMovement playerMove = other.GetComponent<PlayerMovement>();
+            PlayerMove playerMove = other.GetComponent<PlayerMove>();
             
             if (playerMove != null)
             {
@@ -38,7 +38,7 @@ public class SpeedPad : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerMovement playerMove = other.GetComponent<PlayerMovement>();
+            PlayerMove playerMove = other.GetComponent<PlayerMove>();
             
             if (playerMove != null)
             {
@@ -54,7 +54,7 @@ public class SpeedPad : MonoBehaviour
         }
     }
 
-    private IEnumerator ResetSpeedAfterDelay(PlayerMovement playerMove)
+    private IEnumerator ResetSpeedAfterDelay(PlayerMove playerMove)
     {
         yield return new WaitForSeconds(maintainTime);
 
@@ -68,4 +68,4 @@ public class SpeedPad : MonoBehaviour
 
         resetCoroutine = null;
     }
-}*/
+}

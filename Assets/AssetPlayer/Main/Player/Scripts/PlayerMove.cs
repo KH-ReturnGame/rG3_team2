@@ -1,137 +1,174 @@
 using UnityEngine;
 using System.Collections;
+
 public class PlayerMove : MonoBehaviour
 {
-    // ÇÃ·¹ÀÌ¾îÀÇ Rigidbody2D¸¦ ÀúÀåÇÒ º¯¼ö
-    // ¸Å ÇÁ·¹ÀÓ¸¶´Ù GetComponent¸¦ È£ÃâÇÏÁö ¾Ê±â À§ÇØ ÀúÀåÇØ µĞ´Ù.
+    // í”Œë ˆì´ì–´ì˜ Rigidbody2Dë¥¼ ì €ì¥í•  ë³€ìˆ˜
     private Rigidbody2D rb;
 
-    // ÇÃ·¹ÀÌ¾îÀÇ ÀÌµ¿ ¼Óµµ
-    // Inspector¿¡¼­ ÀÚÀ¯·Ó°Ô º¯°æÇÒ ¼ö ÀÖµµ·Ï SerializeField »ç¿ë
+    // í”Œë ˆì´ì–´ì˜ ì´ë™ ì†ë„
     [SerializeField]
-    private float moveSpeed = 5f;
+    public float moveSpeed = 5f;
+    
+    public bool isSpeedBoosted = false;
 
-    // ÁÂ¿ì ÀÔ·Â°ªÀ» ÀúÀå
-    // ¿ŞÂÊ : -1
-    // ÀÔ·Â ¾øÀ½ : 0
-    // ¿À¸¥ÂÊ : 1
+    // ì¢Œìš° ì…ë ¥ê°’ ì €ì¥
     private float moveInput;
-    // Animator ÄÄÆ÷³ÍÆ®¸¦ ÀúÀåÇÒ º¯¼ö
+
+    // ë°”ë¼ë³´ëŠ” ë°©í–¥
+    // ì˜¤ë¥¸ìª½ : 1
+    // ì™¼ìª½ : -1
+    private int facingDirection = 1;
+
+    // Animator ì»´í¬ë„ŒíŠ¸
     private Animator animator;
-    // °ÔÀÓ ½ÃÀÛ ½Ã ÇÑ ¹ø¸¸ ½ÇÇà
+
+    // Sprite ì¢Œìš° ë°˜ì „
+    private SpriteRenderer spriteRenderer;
 
 
-    // Á¡ÇÁ Èû
+    // ì í”„ í˜
     [SerializeField]
     private float jumpForce = 10f;
 
-    // Ground ÆÇÁ¤À» ÇÒ ·¹ÀÌ¾î
+    // Ground íŒì • ë ˆì´ì–´
     [SerializeField]
     private LayerMask groundLayer;
 
-    // ÇÃ·¹ÀÌ¾î Áß½É¿¡¼­ GroundCheck ¿øÀ» ¾ó¸¶³ª ¾Æ·¡·Î ³»¸±Áö
+    // GroundCheck ìœ„ì¹˜
     [SerializeField]
     private Vector2 groundCheckOffset = new Vector2(0f, -0.6f);
 
-    // GroundCheck ¿øÀÇ ¹İÁö¸§
+    // GroundCheck ë°˜ì§€ë¦„
     [SerializeField]
     private float groundCheckRadius = 0.2f;
 
-    // ÇöÀç ¹Ù´Ú¿¡ ÀÖ´ÂÁö ÀúÀå
+    // ë°”ë‹¥ ì—¬ë¶€
     private bool isGrounded;
 
-    // ´ë½Ã ¼Óµµ
+
+    // ëŒ€ì‹œ ì†ë„
     [SerializeField]
     private float dashSpeed = 12f;
 
-    // ´ë½Ã Áö¼Ó ½Ã°£
+    // ëŒ€ì‹œ ì§€ì† ì‹œê°„
     [SerializeField]
     private float dashDuration = 0.2f;
 
-    // ÇöÀç ´ë½Ã ÁßÀÎÁö
+    // ëŒ€ì‹œ ì¤‘ì¸ì§€
     private bool isDashing;
-    // ´ë½Ã ÄğÅ¸ÀÓ
+
+    // ëŒ€ì‹œ ì¿¨íƒ€ì„
     [SerializeField]
     private float dashCooldown = 3f;
 
-    // ÇöÀç ´ë½Ã °¡´É ¿©ºÎ
+    // ëŒ€ì‹œ ê°€ëŠ¥ ì—¬ë¶€
     private bool canDash = true;
+
 
     private void Awake()
     {
-        // °°Àº ¿ÀºêÁ§Æ®¿¡ ÀÖ´Â Rigidbody2D¸¦ °¡Á®¿Â´Ù.
         rb = GetComponent<Rigidbody2D>();
-
         animator = GetComponent<Animator>();
-
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
-    // ÀÔ·Â(Input)Àº Update¿¡¼­ ¹Ş´Â °ÍÀÌ °¡Àå ÀûÀıÇÏ´Ù.
+
+
     private void Update()
     {
-        // Horizontal ÀÔ·ÂÀ» ¹Ş¾Æ¿Â´Ù.
-        // A ¶Ç´Â ¡ç : -1
-        // D ¶Ç´Â ¡æ : 1
+        // ì¢Œìš° ì…ë ¥
         moveInput = Input.GetAxisRaw("Horizontal");
 
-        // ¿ŞÂÊ ÀÔ·ÂÀº ¹«½Ã
-        if (moveInput < 0)
+
+        // ì´ë™ ë°©í–¥ì— ë”°ë¼ ìºë¦­í„° ë°©í–¥ ë³€ê²½
+        if (moveInput > 0)
         {
-            moveInput = 0;
+            facingDirection = 1;
+            spriteRenderer.flipX = false;
         }
+        else if (moveInput < 0)
+        {
+            facingDirection = -1;
+            spriteRenderer.flipX = true;
+        }
+
+
+        // ì´ë™ ì• ë‹ˆë©”ì´ì…˜
         animator.SetFloat("Speed", Mathf.Abs(rb.linearVelocity.x));
-        // ÇÃ·¹ÀÌ¾î ¹ß¹Ø¿¡ ¿øÀ» ¸¸µé¾î Ground¿Í °ãÄ¡´ÂÁö °Ë»ç
+
+
+        // Ground ì²´í¬
         isGrounded = Physics2D.OverlapCircle(
             (Vector2)transform.position + groundCheckOffset,
             groundCheckRadius,
             groundLayer
         );
-        // Animator¿¡ ÇöÀç »óÅÂ Àü´Ş
+
+
+        // Animator ì „ë‹¬
         animator.SetBool("IsGrounded", isGrounded);
-        // ½ºÆäÀÌ½º¸¦ ´­·¶°í ¹Ù´Ú¿¡ ÀÖÀ» ¶§¸¸ Á¡ÇÁ
         animator.SetFloat("VerticalVelocity", rb.linearVelocity.y);
+
+
+        // ì í”„
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
+
+
+        // ëŒ€ì‹œ
         if (Input.GetKeyDown(KeyCode.LeftShift) &&
-    !isDashing &&
-    canDash &&
-    moveInput > 0)
+            !isDashing &&
+            canDash &&
+            moveInput != 0)
         {
             StartCoroutine(Dash());
         }
     }
 
-    // FixedUpdate´Â ÀÏÁ¤ÇÑ ½Ã°£ °£°İÀ¸·Î ½ÇÇàµÈ´Ù.
-    // Rigidbody¸¦ ÀÌ¿ëÇÑ ¹°¸® ÀÌµ¿Àº ¿©±â¼­ Ã³¸®ÇÏ´Â °ÍÀÌ ÁÁ´Ù.
+
     private void FixedUpdate()
     {
-        // ´ë½Ã ÁßÀÌ ¾Æ´Ò ¶§¸¸ ÀÏ¹İ ÀÌµ¿
+        // ëŒ€ì‹œ ì¤‘ì´ ì•„ë‹ ë•Œ ì¼ë°˜ ì´ë™
         if (!isDashing)
         {
-            rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(
+                moveInput * moveSpeed,
+                rb.linearVelocity.y
+            );
         }
     }
 
-    // ÇÃ·¹ÀÌ¾î¸¦ ¾ÕÀ¸·Î ºü¸£°Ô ÀÌµ¿½ÃÅ°´Â ´ë½Ã ÇÔ¼ö
+
     private IEnumerator Dash()
     {
-    
-        // ´ë½Ã ½ÃÀÛ
         isDashing = true;
         canDash = false;
-        // ´ë½Ã ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà
-        animator.SetTrigger("Dash");
-        // ¾ÕÀ¸·Î ºü¸£°Ô ÀÌµ¿
-        rb.linearVelocity = new Vector2(dashSpeed, rb.linearVelocity.y);
 
-        // ´ë½Ã ½Ã°£¸¸Å­ À¯Áö
+        animator.SetTrigger("Dash");
+
+
+        // ë°”ë¼ë³´ëŠ” ë°©í–¥ìœ¼ë¡œ ëŒ€ì‹œ
+        rb.linearVelocity = new Vector2(
+            dashSpeed * facingDirection,
+            rb.linearVelocity.y
+        );
+
+
         yield return new WaitForSeconds(dashDuration);
+
+
         isDashing = false;
+
+
         yield return new WaitForSeconds(dashCooldown);
-        // ´ë½Ã Á¾·á
+
+
         canDash = true;
     }
+
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -141,6 +178,4 @@ public class PlayerMove : MonoBehaviour
             groundCheckRadius
         );
     }
-
-
 }

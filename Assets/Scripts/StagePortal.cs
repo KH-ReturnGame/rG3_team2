@@ -2,9 +2,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
+
 public class StagePortal : MonoBehaviour
 {
-    public string nextScene = "StageSelect";
+    public string nextScene = "2.StageSelect";
 
     [Header("Fade")]
     public Image fadeImage;
@@ -24,6 +25,14 @@ public class StagePortal : MonoBehaviour
 
     IEnumerator NeonFade()
     {
+        // 안전장치: fadeImage가 인스펙터에 할당되지 않았다면 경고를 띄우고 바로 씬을 이동시킵니다.
+        if (fadeImage == null)
+        {
+            Debug.LogError("StagePortal: 'fadeImage'가 할당되지 않았습니다! 유니티 인스펙터에서 Canvas 내부의 Image를 드래그 앤 드롭 해주세요.");
+            SceneManager.LoadScene(nextScene);
+            yield break;
+        }
+
         float time = 0f;
 
         // 어두운 네온 보라
